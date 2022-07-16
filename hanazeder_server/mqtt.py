@@ -51,7 +51,7 @@ def main() -> int:
         conn = None
         while True:
             try:
-                conn = HanazederFP(serial_port=args.serial_port, address=args.address, port=args.port, debug=args.debug)
+                conn = HanazederFP(serial_port=args.serial_port, address=args.address, port=args.port, debug=args.debug, timeout=2)
                 conn.read_information()
                 print(f'Connected to {conn.device_type.name} with version {conn.version}')
                 break
