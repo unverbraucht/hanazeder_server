@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "14da5a5def863722113bad5cb24fbf8a60d49ad7233f010a3d19268fb25e74a3"
+            "sha256": "e5c330c7ed4de3935334b3b8df9ec416987619e3983559ef7aad32df11505348"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,6 +16,14 @@
         ]
     },
     "default": {
+        "asyncio-mqtt": {
+            "hashes": [
+                "sha256:6dbf85a45f94d26e7465411680ada3947b50546e98208d5d52e7a0a7ed7a7c38",
+                "sha256:cfa32fbd3a2d727ac74fa17ccafd30830a2a66f9e5e6ac7eee5458a9c7a6a832"
+            ],
+            "index": "pypi",
+            "version": "==0.12.1"
+        },
         "click": {
             "hashes": [
                 "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e",
@@ -41,11 +49,11 @@
         },
         "hanazeder": {
             "hashes": [
-                "sha256:0620f9027f3148f66e58aba6d6a332a350c44fa20f82068f1cd0cebc1c8c9968",
-                "sha256:fa587b4adfd9597ea4978d6e904a4cf75ea93f38edbf07e44da8ba27fd8b3f06"
+                "sha256:1a63fa5708661a776b2166f66690a1539a113f3dff12c5a548ec04c2c93d113e",
+                "sha256:9193553086ce4a4e192923a92e1631f9c9abae1d61adf7986daac5d99c362b7a"
             ],
             "index": "pypi",
-            "version": "==0.7.0"
+            "version": "==0.11.0"
         },
         "importlib-metadata": {
             "hashes": [

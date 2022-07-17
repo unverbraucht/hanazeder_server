@@ -6,7 +6,8 @@ name = "pypi"
 [packages]
 paho-mqtt = "*"
 flask = "*"
-hanazeder = "==0.7.0"
+hanazeder = "==0.11.0"
+asyncio-mqtt = "*"
 
 [dev-packages]
 pytest = "*"
