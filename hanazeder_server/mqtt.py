@@ -51,6 +51,8 @@ async def main() -> int:
             await mqtt_instance.publish_base()
             while True:
                 await mqtt_instance.run_loop()
+                if not mqtt_instance.connected:
+                    break
                 await mqtt_instance.conn.wait_for_empty_queue()
                 await asyncio.sleep(30)
         except Exception as e:
