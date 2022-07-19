@@ -51,13 +51,13 @@ async def main() -> int:
             await mqtt_instance.publish_base()
             while True:
                 await mqtt_instance.run_loop()
-                if not mqtt_instance.connected:
+                if not mqtt_instance.conn.connected:
                     break
                 await mqtt_instance.conn.wait_for_empty_queue()
                 await asyncio.sleep(30)
         except Exception as e:
             try:
-                mqtt_instance.connection.close()
+                mqtt_instance.conn.connection.close()
             except Exception as e2:
                 print(f'Cannot close connection', e2)
             print(f'Error while reading, will sleep and retry', e)
