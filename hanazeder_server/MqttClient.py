@@ -106,6 +106,9 @@ class MqttClient(BaseServer):
     async def run_loop(self):
         # Read all sensor values
         for sensor_idx in range(0, 15):
+            # Skip unconnected sensors
+            if self.names[sensor_idx] == None or self.names[sensor_idx] == 'Nicht bel':
+                continue
             if sensor_idx % 4 == 3:
                 await self.conn.wait_for_empty_queue()
             if self.debug:
