@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-hanazeder = "==0.12.0"
+hanazeder = "==1.1.1"
 asyncio-mqtt = "*"
 
 [dev-packages]

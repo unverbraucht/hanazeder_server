@@ -89,10 +89,18 @@ class MqttClient(BaseServer):
         ha_config['state_topic'] = f'{self.base_topic}/impulse'
         await self.mqttc.publish(f'homeassistant/sensor/{unique_id}/impulse/config', json.dumps(ha_config, ensure_ascii=False).encode('utf8'), retain=True)
     
-    async def on_sensor_read(self, index: int, value: float):
-        await self.mqttc.publish(f'{self.base_topic}/sensor/{index}', json.dumps({'temperature': value}))
-    
-    async def on_energy_read(self, energy):
+    async def run_loop(self):
+        # Read all sensor values
+        for sensor_idx in range(0, 15):
+            # Skip unconnected sensors
+            if self.names[sensor_idx] == None:
+                continue
+            if self.debug:
+                print(f'Reading sensor {sensor_idx}')
+            value = await self.conn.read_sensor(sensor_idx)
+            await self.mqttc.publish(f'{self.base_topic}/sensor/{sensor_idx}', json.dumps({'temperature': value}))
+                
+        energy = await self.conn.read_energy()
         # TODO: parallelize
         await self.mqttc.publish(f'{self.base_topic}/energy', energy[0], retain=True)
         await self.mqttc.publish(f'{self.base_topic}/power', energy[1], retain=True)
@@ -102,17 +110,3 @@ class MqttClient(BaseServer):
             print(f'  Total   {energy[0]}')
             print(f'  Current {energy[1]}')
             print(f'  Impulse {energy[2]}')
-    
-    async def run_loop(self):
-        # Read all sensor values
-        for sensor_idx in range(0, 15):
-            # Skip unconnected sensors
-            if self.names[sensor_idx] == None:
-                continue
-            if sensor_idx % 4 == 3:
-                await self.conn.wait_for_empty_queue()
-            if self.debug:
-                print(f'Reading sensor {sensor_idx}')
-            await self.conn.read_sensor(sensor_idx, self.on_sensor_read)
-                
-        await self.conn.read_energy(self.on_energy_read)
