@@ -59,9 +59,11 @@ class MqttClient(BaseServer):
         await self.mqttc.publish(
             f'{self.base_topic}/state', 'online',
             retain=True)
-    
+
     async def publish_base(self):
-        for sensor_idx, name in enumerate(self.names):
+        await super(MqttClient, self).publish_base()
+        for sensor_idx in range(0, 15):
+            name = self.names[sensor_idx]
             print(f'Sensor {sensor_idx} has name {name}')
             unique_id = f'{self.device_id}-f{sensor_idx}'
             ha_config = copy(self.ha_base_config)
@@ -118,25 +120,22 @@ class MqttClient(BaseServer):
             retain=True)
     
     async def run_loop(self):
+        await super(MqttClient, self).run_loop()
         # Read all sensor values
         for sensor_idx in range(0, 15):
             # Skip unconnected sensors
-            if self.names[sensor_idx] is None:
+            if \
+                    self.names[sensor_idx] is None \
+                    or self.sensor_value[sensor_idx] is None:
                 continue
-            if self.debug:
-                print(f'Reading sensor {sensor_idx}')
-            value = await self.conn.read_sensor(sensor_idx)
             await self.mqttc.publish(
                 f'{self.base_topic}/sensor/{sensor_idx}',
-                json.dumps({'temperature': value}))
+                json.dumps({'temperature': self.sensor_value[sensor_idx]}))
                 
-        energy = await self.conn.read_energy()
         # TODO: parallelize
-        await self.mqttc.publish(f'{self.base_topic}/energy', energy[0])
-        await self.mqttc.publish(f'{self.base_topic}/power', energy[1])
-        await self.mqttc.publish(f'{self.base_topic}/impulse', energy[2])
-        if self.debug:
-            print('Energy readings:')
-            print(f'  Total   {energy[0]}')
-            print(f'  Current {energy[1]}')
-            print(f'  Impulse {energy[2]}')
+        await self.mqttc.publish(f'{self.base_topic}/energy', self.energy[0])
+        await self.mqttc.publish(f'{self.base_topic}/power', self.energy[1])
+        await self.mqttc.publish(f'{self.base_topic}/impulse', self.energy[2])
+    
+    async def close(self):
+        self.running = False

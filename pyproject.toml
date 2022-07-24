@@ -9,6 +9,7 @@ license = "Apache Software License"
 python = "^3.7"
 asyncio-mqtt = "^0.12.1"
 hanazeder = "^1.1.1"
+quart = "^0.18.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
