@@ -11,8 +11,6 @@ asyncio-mqtt = "^0.12.1"
 hanazeder = "^1.1.1"
 
 [tool.poetry.dev-dependencies]
-
-[tool.poetry.group.dev.dependencies]
 flake8 = "^4.0.1"
 
 [build-system]
