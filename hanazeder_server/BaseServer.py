@@ -26,7 +26,7 @@ class BaseServer:
                     serial_port=serial_port,
                     address=address,
                     port=port,
-                    timeout=2)
+                    timeout=3)
                 await self.conn.read_information()
                 print(f'Connected to {self.conn.device_type.name} with version {self.conn.version}')
                 break
@@ -90,4 +90,6 @@ class BaseServer:
 
     def close(self):
         if self.conn and self.conn.connection:
+            if self.debug:
+                print('Closed connection: ', self.conn.connection)
             self.conn.connection.close()
