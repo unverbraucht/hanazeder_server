@@ -13,8 +13,6 @@ quart = "^0.18.0"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
-python-semantic-release = "^7.30.1"
-build = "^0.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
