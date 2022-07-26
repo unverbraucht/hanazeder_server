@@ -78,11 +78,11 @@ async def mqtt_loop():
                 await asyncio.sleep(30)
         except Exception as e:
             try:
-                await app.mqtt_instance.close()
+                app.mqtt_instance.close()
             except Exception as e2:
                 print('Cannot close connection', e2)
             print('Error while reading, will sleep and retry', e)
-            if not app.mqtt_instance.running:
+            if app.mqtt_instance.running:
                 await asyncio.sleep(90)
 
 
@@ -91,9 +91,9 @@ async def startup():
     asyncio.get_event_loop().create_task(mqtt_loop())
 
 
-
 @app.after_serving
 async def shutdown():
+    app.mqtt_instance.shutdown()
     app.mqtt_instance.close()
 
 

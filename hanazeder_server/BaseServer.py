@@ -5,7 +5,7 @@ from hanazeder.comm import InvalidHeaderException, ChecksumNotMatchingException
 
 class BaseServer:
     running = True
-    names: List[str] = []
+    names: List[str] = [None] * 16
     conn: HanazederFP = None
     sensor_value = [None] * 16
     energy = [None] * 3
@@ -73,7 +73,7 @@ class BaseServer:
             if self.names[sensor_idx] is None:
                 continue
             sensors.append({
-                    "name":self.names[sensor_idx],
+                    "name": self.names[sensor_idx],
                     "value": self.sensor_value[sensor_idx]
                 })
         return {
@@ -81,7 +81,11 @@ class BaseServer:
             "energy": self.energy[0],
             "power": self.energy[1],
             "impulses": self.energy[2],
-            "running": True
+            "running": True,
+            "controller": {
+                "device": self.conn.device_type.name,
+                "version": self.conn.version
+            }
         }
 
     def close(self):

@@ -78,7 +78,7 @@ class MqttClient(BaseServer):
                 f'homeassistant/sensor/{unique_id}/temperature/config',
                 json.dumps(ha_config, ensure_ascii=False).encode('utf8'),
                 retain=True)
-            
+
         # Setup energy config
         ha_config = copy(self.ha_base_config)
         unique_id = f'{self.device_id}-power'
@@ -131,11 +131,11 @@ class MqttClient(BaseServer):
             await self.mqttc.publish(
                 f'{self.base_topic}/sensor/{sensor_idx}',
                 json.dumps({'temperature': self.sensor_value[sensor_idx]}))
-                
+
         # TODO: parallelize
         await self.mqttc.publish(f'{self.base_topic}/energy', self.energy[0])
         await self.mqttc.publish(f'{self.base_topic}/power', self.energy[1])
         await self.mqttc.publish(f'{self.base_topic}/impulse', self.energy[2])
-    
-    async def close(self):
+
+    def shutdown(self):
         self.running = False
