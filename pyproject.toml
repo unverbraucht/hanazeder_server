@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hanazeder_server"
-version = "0.1.0"
+version = "0.1.1"
 description = "A server that reads energy and sensor data from a Hanazeder FP pump control system and publishes it to MQTT. Automatically creates Home Assistant topics."
 authors = ["Kevin Read <me@kevin-read.com>"]
 license = "Apache Software License"
