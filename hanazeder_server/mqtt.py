@@ -1,10 +1,14 @@
 import asyncio
 import argparse
 import sys
-from hanazeder_server.BaseServer import BaseServer
+import logging
 
-from hanazeder_server.MqttClient import MqttClient
 from quart import Quart
+
+from hanazeder_server.BaseServer import BaseServer
+from hanazeder_server.MqttClient import MqttClient
+
+logging.basicConfig(format='%(asctime)s %(message)s')
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--serial-port", help="set serial port",
@@ -44,6 +48,9 @@ if not args.address and not args.serial_port:
 if args.address and not args.port:
     print('Specify port together with address')
     sys.exit(2)
+
+if args.debug:
+    logging.basicConfig(level=logging.DEBUG)
 
 app = Quart(__name__)
 

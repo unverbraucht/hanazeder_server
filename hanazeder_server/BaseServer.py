@@ -2,6 +2,7 @@ from typing import List
 from hanazeder.Hanazeder import HanazederFP, SENSOR_LABELS
 from hanazeder.comm import InvalidHeaderException, ChecksumNotMatchingException
 
+import asyncio
 
 class BaseServer:
     running = True
@@ -19,19 +20,14 @@ class BaseServer:
                     serial_port: str = None,
                     address: str = None,
                     port: int = 3000):
-        while True:
-            try:
-                self.conn = HanazederFP(debug=self.debug)
-                await self.conn.open(
-                    serial_port=serial_port,
-                    address=address,
-                    port=port,
-                    timeout=3)
-                await self.conn.read_information()
-                print(f'Connected to {self.conn.device_type.name} with version {self.conn.version}')
-                break
-            except (InvalidHeaderException, ChecksumNotMatchingException) as e:
-                print('Cannot read info, retrying', e)
+        self.conn = HanazederFP(debug=self.debug, request_timeout=2)
+        await self.conn.open(
+            serial_port=serial_port,
+            address=address,
+            port=port,
+            timeout=0.5)
+        await self.conn.read_information()
+        print(f'Connected to {self.conn.device_type.name} with version {self.conn.version}')
 
     async def read_names_block(self):
         # Read label from fixed list
@@ -48,22 +44,26 @@ class BaseServer:
         pass
 
     async def run_loop(self):
+        read_tasks = [self.conn.read_energy()]
         # Read all sensor values
+        
         for sensor_idx in range(0, 15):
             # Skip unconnected sensors
             if self.names[sensor_idx] is None:
                 continue
             if self.debug:
                 print(f'Reading sensor {sensor_idx}')
-            self.sensor_value[sensor_idx] = \
-                await self.conn.read_sensor(sensor_idx)
-
-        self.energy = await self.conn.read_energy()
+            read_tasks.append(self.conn.read_sensor(sensor_idx))
+        self.energy, *sensor_vals = await asyncio.gather(*read_tasks)
         if self.debug:
             print('Energy readings:')
             print(f'  Total   {self.energy[0]}')
             print(f'  Current {self.energy[1]}')
             print(f'  Impulse {self.energy[2]}')
+        for sensor_idx in range(0, 15):
+            # Skip unconnected sensors
+            if self.names[sensor_idx] is not None:
+                self.sensor_value[sensor_idx] = sensor_vals.pop(0)
 
     def as_dict(self):
         sensors = []
