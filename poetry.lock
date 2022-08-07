@@ -92,7 +92,7 @@ hyperframe = ">=6.0,<7"
 
 [[package]]
 name = "hanazeder"
-version = "1.1.7"
+version = "1.2.0"
 description = "Library and utils to read sensor data from Hanazeder FP heating pumps"
 category = "main"
 optional = false
@@ -103,7 +103,7 @@ crccheck = "*"
 pyserial = "*"
 
 [package.extras]
-dev = ["pytest", "bumpver", "build", "twine", "pytest-mock", "pytest-asyncio"]
+dev = ["pytest-asyncio", "pytest-mock", "twine", "build", "bumpver", "pytest"]
 
 [[package]]
 name = "hpack"
@@ -322,7 +322,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "b5c66a047d1567e930dbfd8e140a0131be66022c882ff8a721d55f835ea5e442"
+content-hash = "393de579dc2a94986e89ca0faca9860d099fc1348aa2e8ed90c7d3f7e377d001"
 
 [metadata.files]
 aiofiles = [
@@ -362,8 +362,8 @@ h2 = [
     {file = "h2-4.1.0.tar.gz", hash = "sha256:a83aca08fbe7aacb79fec788c9c0bac936343560ed9ec18b82a13a12c28d2abb"},
 ]
 hanazeder = [
-    {file = "hanazeder-1.1.7-py3-none-any.whl", hash = "sha256:8b12f64c0f1af90695454e8ac9452620001462db5668a8598403fd8f5bcd9e23"},
-    {file = "hanazeder-1.1.7.tar.gz", hash = "sha256:9c8596daaf6fc412c1d1acc369e5f5b79d081e198e0e6db12b008cfffca23b14"},
+    {file = "hanazeder-1.2.0-py3-none-any.whl", hash = "sha256:eaaf98bb578d7e2a34e34a7914f274662f1ffed5365da7add8b0851925a51505"},
+    {file = "hanazeder-1.2.0.tar.gz", hash = "sha256:81775bc49fe8a5e2c8c407f11fcbc0819ab60a1d426c0db0094717f695ff3102"},
 ]
 hpack = [
     {file = "hpack-4.0.0-py3-none-any.whl", hash = "sha256:84a076fad3dc9a9f8063ccb8041ef100867b1878b25ef0ee63847a5d53818a6c"},
