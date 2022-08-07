@@ -30,6 +30,7 @@ Install from pip:
 pip install hanazeder_server
 ```
 
+
 # Starting
 A simple example of reading from a USB-to-RS232 adapter (`/dev/ttyUSB0`) and posting the data to the MQTT broker at `192.168.1.1` is
 ```
