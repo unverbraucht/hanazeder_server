@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.0 (2022-09-08)
+### Features
+* Also publish outlet / pump states
+* Fixes to documentation
+* Respect --home-assistant flag
+
 ## v1.0.0 (2022-09-08)
 ### Breaking
 * Mark as stable
