@@ -92,7 +92,7 @@ hyperframe = ">=6.0,<7"
 
 [[package]]
 name = "hanazeder"
-version = "1.2.0"
+version = "1.2.1"
 description = "Library and utils to read sensor data from Hanazeder FP heating pumps"
 category = "main"
 optional = false
@@ -100,7 +100,7 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 crccheck = "*"
-pyserial = "*"
+pyserial-asyncio = ">=0.6"
 
 [package.extras]
 dev = ["pytest-asyncio", "pytest-mock", "twine", "build", "bumpver", "pytest"]
@@ -243,6 +243,17 @@ python-versions = "*"
 cp2110 = ["hidapi"]
 
 [[package]]
+name = "pyserial-asyncio"
+version = "0.6"
+description = "Python Serial Port Extension - Asynchronous I/O support"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+pyserial = "*"
+
+[[package]]
 name = "quart"
 version = "0.18.0"
 description = "A Python ASGI web microframework with the same API as Flask"
@@ -322,7 +333,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "393de579dc2a94986e89ca0faca9860d099fc1348aa2e8ed90c7d3f7e377d001"
+content-hash = "a3057ce35561e09230fa6bb1f69b935d91dcf5299fbb03c0235433d2bc0fa9ae"
 
 [metadata.files]
 aiofiles = [
@@ -362,8 +373,8 @@ h2 = [
     {file = "h2-4.1.0.tar.gz", hash = "sha256:a83aca08fbe7aacb79fec788c9c0bac936343560ed9ec18b82a13a12c28d2abb"},
 ]
 hanazeder = [
-    {file = "hanazeder-1.2.0-py3-none-any.whl", hash = "sha256:eaaf98bb578d7e2a34e34a7914f274662f1ffed5365da7add8b0851925a51505"},
-    {file = "hanazeder-1.2.0.tar.gz", hash = "sha256:81775bc49fe8a5e2c8c407f11fcbc0819ab60a1d426c0db0094717f695ff3102"},
+    {file = "hanazeder-1.2.1-py3-none-any.whl", hash = "sha256:698febf654858906de8f064a20a0dc7b0613cb71d5ef9abd81b6f4b3c94d4208"},
+    {file = "hanazeder-1.2.1.tar.gz", hash = "sha256:f501627255adbf8a5e778f02153a63c2a665f26ed5047b1336a093b7f5528ad6"},
 ]
 hpack = [
     {file = "hpack-4.0.0-py3-none-any.whl", hash = "sha256:84a076fad3dc9a9f8063ccb8041ef100867b1878b25ef0ee63847a5d53818a6c"},
@@ -453,6 +464,10 @@ pyflakes = [
 pyserial = [
     {file = "pyserial-3.5-py2.py3-none-any.whl", hash = "sha256:c4451db6ba391ca6ca299fb3ec7bae67a5c55dde170964c7a14ceefec02f2cf0"},
     {file = "pyserial-3.5.tar.gz", hash = "sha256:3c77e014170dfffbd816e6ffc205e9842efb10be9f58ec16d3e8675b4925cddb"},
+]
+pyserial-asyncio = [
+    {file = "pyserial-asyncio-0.6.tar.gz", hash = "sha256:b6032923e05e9d75ec17a5af9a98429c46d2839adfaf80604d52e0faacd7a32f"},
+    {file = "pyserial_asyncio-0.6-py3-none-any.whl", hash = "sha256:de9337922619421b62b9b1a84048634b3ac520e1d690a674ed246a2af7ce1fc5"},
 ]
 quart = [
     {file = "Quart-0.18.0-py3-none-any.whl", hash = "sha256:5bef6711d25e379ce8a1ed3f7d3ec72eae4159d116e8d480d1cab59c8bb6f44d"},
