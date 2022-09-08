@@ -63,7 +63,8 @@ def create_instance():
                     args.mqtt_user,
                     args.mqtt_password,
                     args.mqtt_port,
-                    args.debug)
+                    args.debug,
+                    args.home_assistant)
     else:
         return BaseServer(args.device_id, args.debug)
 
@@ -100,7 +101,8 @@ async def startup():
 
 @app.after_serving
 async def shutdown():
-    app.mqtt_instance.shutdown()
+    if args.mqtt_server:
+        app.mqtt_instance.shutdown()
     app.mqtt_instance.close()
 
 

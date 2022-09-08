@@ -13,11 +13,13 @@ class MqttClient(BaseServer):
                     mqtt_user=None,
                     mqtt_password=None,
                     mqtt_port: int = 1883,
-                    debug=False):
+                    debug=False,
+                    home_assistant=False):
         super(MqttClient, self).__init__(device_id, debug)
         self.base_topic = f'hanazeder/{device_id}'
 
         will = Will(f'{self.base_topic}/state', payload='offline', retain=True)
+        self.home_assistant = home_assistant
 
         self.mqttc = Client(
                     mqtt_server,
@@ -62,6 +64,10 @@ class MqttClient(BaseServer):
 
     async def publish_base(self):
         await super(MqttClient, self).publish_base()
+        if self.home_assistant:
+            await self.publish_home_assistant_autodiscovery()
+    
+    async def publish_home_assistant_autodiscovery(self):
         for sensor_idx in range(0, 15):
             name = self.names[sensor_idx]
             print(f'Sensor {sensor_idx} has name {name}')
@@ -76,6 +82,18 @@ class MqttClient(BaseServer):
             ha_config['value_template'] = '{{ value_json.temperature }}'
             await self.mqttc.publish(
                 f'homeassistant/sensor/{unique_id}/temperature/config',
+                json.dumps(ha_config, ensure_ascii=False).encode('utf8'),
+                retain=True)
+
+        for sensor_idx in range(0, 10):
+            unique_id = f'{self.device_id}-o{sensor_idx}'
+            ha_config = copy(self.ha_base_config)
+            ha_config['unique_id'] = unique_id
+            ha_config['name'] = f'Pump {sensor_idx + 1}'
+            ha_config['state_topic'] = f'{self.base_topic}/outlet/{sensor_idx}'
+            ha_config['value_template'] = '{{ value_json.state }}'
+            await self.mqttc.publish(
+                f'homeassistant/binary_sensor/{unique_id}/outlet/config',
                 json.dumps(ha_config, ensure_ascii=False).encode('utf8'),
                 retain=True)
 
@@ -131,6 +149,11 @@ class MqttClient(BaseServer):
             await self.mqttc.publish(
                 f'{self.base_topic}/sensor/{sensor_idx}',
                 json.dumps({'temperature': self.sensor_value[sensor_idx]}))
+        
+        for i, state in enumerate(self.outlet_states):
+            await self.mqttc.publish(
+                f'{self.base_topic}/outlet/{i}',
+                json.dumps({'state': 'ON' if state else 'OFF'}))
 
         # TODO: parallelize
         await self.mqttc.publish(f'{self.base_topic}/energy', self.energy[0])

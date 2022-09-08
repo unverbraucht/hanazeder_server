@@ -45,8 +45,8 @@ class BaseServer:
 
     async def run_loop(self):
         read_tasks = [self.conn.read_energy()]
+        read_tasks.append(self.conn.read_outlets())
         # Read all sensor values
-        
         for sensor_idx in range(0, 15):
             # Skip unconnected sensors
             if self.names[sensor_idx] is None:
@@ -54,7 +54,7 @@ class BaseServer:
             if self.debug:
                 print(f'Reading sensor {sensor_idx}')
             read_tasks.append(self.conn.read_sensor(sensor_idx))
-        self.energy, *sensor_vals = await asyncio.gather(*read_tasks)
+        self.energy, self.outlet_states, *readings = await asyncio.gather(*read_tasks)
         if self.debug:
             print('Energy readings:')
             print(f'  Total   {self.energy[0]}')
@@ -63,7 +63,10 @@ class BaseServer:
         for sensor_idx in range(0, 15):
             # Skip unconnected sensors
             if self.names[sensor_idx] is not None:
-                self.sensor_value[sensor_idx] = sensor_vals.pop(0)
+                self.sensor_value[sensor_idx] = readings.pop(0)
+        if self.debug:
+            print('Outlet states:')
+            print(self.outlet_states)
 
     def as_dict(self):
         sensors = []
@@ -81,6 +84,7 @@ class BaseServer:
             "energy": self.energy[0],
             "power": self.energy[1],
             "impulses": self.energy[2],
+            "outlets": self.outlet_states,
             "running": True,
             "controller": {
                 "device": self.conn.device_type.name,
