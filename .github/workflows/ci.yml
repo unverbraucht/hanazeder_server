@@ -49,6 +49,8 @@ jobs:
           python-version: 3.8
       - name: Checkout code
         uses: actions/checkout@v3
+      - name: Fetch master
+        run: git fetch --prune origin +refs/heads/master:refs/remotes/origin/master
       - name: Semantic Release
         run: |
           pip install python-semantic-release build
