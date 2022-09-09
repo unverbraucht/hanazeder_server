@@ -50,7 +50,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Fetch master
-        run: git fetch --prune origin +refs/heads/master:refs/remotes/origin/master
+        run: git fetch --prune origin +refs/heads/main:refs/remotes/origin/main
       - name: Semantic Release
         run: |
           pip install python-semantic-release build
