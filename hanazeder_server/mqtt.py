@@ -28,6 +28,7 @@ parser.add_argument(
     help="Device id, used for topic structure and to identify within HA",
     default="hanazeder")
 parser.add_argument("--debug", help="print low-level messages", action="store_true")
+parser.add_argument("--tls", help="Connect via TLS, also make sure to set correct MQTT port (MQTT default is 8883)", action="store_true")
 parser.add_argument(
     "--address",
     help="connect to HOSTNAME RS232-adapter, needs port as well",
@@ -64,7 +65,8 @@ def create_instance():
                     args.mqtt_password,
                     args.mqtt_port,
                     args.debug,
-                    args.home_assistant)
+                    args.home_assistant,
+                    args.tls)
     else:
         return BaseServer(args.device_id, args.debug)
 

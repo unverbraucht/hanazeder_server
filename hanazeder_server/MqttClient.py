@@ -1,4 +1,4 @@
-from asyncio_mqtt import Client, ProtocolVersion, Will
+from asyncio_mqtt import Client, ProtocolVersion, Will, TLSParameters
 from copy import copy
 import json
 
@@ -14,12 +14,22 @@ class MqttClient(BaseServer):
                     mqtt_password=None,
                     mqtt_port: int = 1883,
                     debug=False,
-                    home_assistant=False):
+                    home_assistant=False,
+                    tls=False,
+                    tls_client_cert=None,
+                    tls_client_key=None):
         super(MqttClient, self).__init__(device_id, debug)
         self.base_topic = f'hanazeder/{device_id}'
 
         will = Will(f'{self.base_topic}/state', payload='offline', retain=True)
         self.home_assistant = home_assistant
+        tls_params = None
+
+        if tls:
+            tls_params = TLSParameters(
+                certfile=tls_client_cert,
+                keyfile=tls_client_key,
+            )
 
         self.mqttc = Client(
                     mqtt_server,
@@ -30,7 +40,8 @@ class MqttClient(BaseServer):
                     protocol=ProtocolVersion.V311,
                     transport="tcp",
                     username=mqtt_user,
-                    password=mqtt_password)
+                    password=mqtt_password,
+                    tls=tls_params)
     
     async def connect(
                     self,
