@@ -15,7 +15,7 @@ The server runs on Linux, OSX and Windows and needs Python >= 3.6
 
 ## Supported Hanazeder systems
 Supported systems are
-- Hanazeder FP1 (untested)
+- Hanazeder FP1
 - Hanazeder FP2 (untested)
 - Hanazeder FP3 (untested)
 - Hanazeder FP6 (untested)
@@ -43,7 +43,7 @@ python -m hanazeder_server.mqtt --help
 
 A simple example of reading from a USB-to-RS232 adapter (`/dev/ttyUSB0`) and making it available as REST endpoint at http://localhost:5000/api/data run
 ```
-python -m hanazeder_server.mqtt --serial-port/dev/ttyUSB0 --mqtt-server 192.168.1.1
+python -m hanazeder_server.mqtt --serial-port /dev/ttyUSB0
 ```
 
 This can be run in any ASGI compatible web server, more in the [Quart documentation on deploying](https://pgjones.gitlab.io/quart/tutorials/deployment.html).
@@ -53,7 +53,7 @@ Please note that the MQTT client still contains the REST API mentioned above.
 
 A simple example of reading from a USB-to-RS232 adapter (`/dev/ttyUSB0`) and posting the data to the MQTT broker at `192.168.1.1` is
 ```
-python -m hanazeder_server.mqtt --serial-port/dev/ttyUSB0 --mqtt-server 192.168.1.1
+python -m hanazeder_server.mqtt --serial-port /dev/ttyUSB0 --mqtt-server 192.168.1.1
 ```
 
 A more complex example will read from a RS232-to-TCP converter at 192.168.1.2 port 3000 and post the data to the MQTT broker at 192.168.1.1, using the username MQTT-USER and password MQTT-PASSWORD to log into the broker. It will print debug information to stdout. Also add Home Assistant autodiscovery data.
