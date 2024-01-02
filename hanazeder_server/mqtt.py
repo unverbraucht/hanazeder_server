@@ -28,6 +28,10 @@ parser.add_argument(
     help="Device id, used for topic structure and to identify within HA",
     default="hanazeder")
 parser.add_argument("--debug", help="print low-level messages", action="store_true")
+parser.add_argument("--tls", help="Connect via TLS, also make sure to set correct MQTT port (MQTT default is 8883)", action="store_true")
+parser.add_argument("--tls-client-cert", help="File containing TLS client cert for authentication")
+parser.add_argument("--tls-client-key", help="File containing TLS client key for authentication")
+parser.add_argument("--tls-ca-cert", help="File containing TLS CA cert to check for. If not set system CA database is used.")
 parser.add_argument(
     "--address",
     help="connect to HOSTNAME RS232-adapter, needs port as well",
@@ -48,6 +52,9 @@ if not args.address and not args.serial_port:
 if args.address and not args.port:
     print('Specify port together with address')
     sys.exit(2)
+if (args.tls_client_cert or args.tls_client_key or args.tls_ca_cert) and not args.tls:
+    print('Enable TLS support with --tls if you want to set any key or cert')
+    sys.exit(3)
 
 if args.debug:
     logging.basicConfig(level=logging.DEBUG)
@@ -64,7 +71,11 @@ def create_instance():
                     args.mqtt_password,
                     args.mqtt_port,
                     args.debug,
-                    args.home_assistant)
+                    args.home_assistant,
+                    args.tls,
+                    args.tls_client_cert,
+                    args.tls_client_key,
+                    args.tls_ca_cert)
     else:
         return BaseServer(args.device_id, args.debug)
 
