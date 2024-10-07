@@ -1,7 +1,7 @@
 FROM python:3.10-alpine3.16
 
 RUN apk update && \
-    apk add usbutils bash wget
+    apk add usbutils bash
 
 RUN pip3 install --no-cache-dir --upgrade pip && \
     pip3 install --no-cache-dir hanazeder_server
